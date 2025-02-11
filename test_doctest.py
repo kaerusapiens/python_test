@@ -31,11 +31,11 @@ if __name__ == '__main__':
     import doctest
     
     #testmod이용 파일 전체의 docstring을 테스트 .기본 Ture가 아니나, True를 설정하면 결과값을 볼 수 있음음
-    #doctest.testmod(verbose=True) 
+    doctest.testmod(verbose=True) 
 
     #별도의 테스트 파일을 만들어서 실행
     doctest.testfile("test_cal.txt", encoding="utf-8", verbose=True)
 
     # 특정 함수의 docstring 테스트 실행
-    #cal = Cal()
-    #doctest.run_docstring_examples(cal.add_num_and_double, globals(), verbose=True)
+    cal = Cal()
+    doctest.run_docstring_examples(cal.add_num_and_double, globals(), verbose=True)
