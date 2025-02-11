@@ -1,0 +1,11 @@
+>>> from test_doctest import Cal
+>>> cal = Cal()
+>>> cal.add_num_and_double(1, 1)
+4
+
+>>> cal.add_num_and_double(3, 3)
+12
+
+>>> cal.add_num_and_double("2", "2")
+Traceback (most recent call last):
+ValueError: Both arguments must be integers.
