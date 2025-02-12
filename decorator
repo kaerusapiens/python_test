@@ -1,0 +1,48 @@
+
+def trace(func):                            
+    def wrapper():
+        print(func.__name__, 'start')   
+        func()                               
+        print(func.__name__, 'end')
+    return wrapper                          
+ 
+@trace    
+def hello_function():
+    print('hello')
+ 
+@trace  
+def world_function():
+    print('world')
+ 
+hello_function() 
+world_function()
+
+#------------------------------------------------
+
+def trace(func):                             
+    def wrapper():                           
+        print(func.__name__, 'start')    
+        func()                               
+        print(func.__name__, 'end')
+    return wrapper                         
+ 
+def hello_function():
+    print('hello')
+ 
+def world_function():
+    print('world')
+ 
+trace_hello = trace(hello_function)   
+trace_hello()                
+trace_world = trace(world_function)    
+trace_world()   
+
+"""
+hello_function start
+hello
+hello_function end
+world_function start
+world
+world_function end
+
+"""
