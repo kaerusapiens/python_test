@@ -27,7 +27,7 @@ def get_data_in_batches(query: str, batch_size: int) -> Iterator[pd.DataFrame]:
 batch_size = 10
 query = """
     SELECT *
-    FROM `concise-rope-356505.pokemon.generation_1`
+    FROM `프로젝트명.pokemon.generation_1`
 """
 
 for batch in get_data_in_batches(query, batch_size):
