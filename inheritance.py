@@ -16,11 +16,18 @@ class Person(object):
     
 # child class
 class Employee(Person):
-    def __init__(self, name, idnumber, salary, post):
+    def __init__(self, name, idnumber, salary=5000,post=None):
         self.salary = salary
-        self.post = post
-        #親クラスのコンストラクタを呼び出す
+        self._post =post
+        #ーーーーーー
+        #親クラスのコンストラクタを呼び出す方法
+        #①Person.__init__(self, name, idnumber)
+        #②⇓
         super().__init__(name, idnumber)
+
+    @property
+    def post(self):
+        return self._post
         
     #override : 親クラスのメソッドを上書きする
     def details(self):
@@ -29,7 +36,7 @@ class Employee(Person):
         print("Post: {}".format(self.post))
 
 
-a = Employee('Rahul', 886012, 200000, "Intern")
-
+a = Employee('Rahul', 886012, 200000,"intern") #postはNoneではなく、intern
+#a.post=500 #これはsetterを設定してなかったので、実行されない
 a.display()
 a.details()
