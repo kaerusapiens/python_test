@@ -21,7 +21,8 @@ class TestCal(unittest.TestCase):
         """
         #cal = calculation.Cal() setUpで定義したため不要
         self.assertEqual(self.cal.add_num_and_double(1,1),4)
-    @unittest.skipIf(release_name=='dev')
+
+    #@unittest.skipIf(release_name=='dev','skip!') 特定条件の場合、Skipしたい場合
     def test_add_num_and_double_raise(self):
         """異常エラー:with文"""
         #cal = calculation.Cal() setUpで定義したため不要
