@@ -1,8 +1,11 @@
 import unittest
 import calculation
+import pytest
 
 release_name = 'dev'
-class TestCal(unittest.TestCase):
+
+# unnittestの場合のクラス。
+class CalTest(unittest.TestCase):
     """
     """
     def setUp(self):
@@ -28,4 +31,29 @@ class TestCal(unittest.TestCase):
         #cal = calculation.Cal() setUpで定義したため不要
         with self.assertRaises(ValueError):
             self.cal.add_num_and_double('1','1')
+
+# pytyestの場合
+class TestCal(object):
+    def setup_method(self,method):
+        print('method={}'.format(method.__name__))
+        self.cal = calculation.Cal()
+
+    def teardown_method(self,method):
+        print('method={}'.format(method.__name__))
+        del self.cal
+
+    #@pytest.mark.skip(reason='skip!') skipをしたい場合
+    def test_add_num_and_double(self):
+        #cal= calculation.Cal() setup_methodを宣言したので不要
+        assert self.cal.add_num_and_double(1,1) == 4
     
+    #@pytest.mark.skipIf(release_name=='dev',reason='skip!') 特定条件の場合、Skipしたい場合
+    def test_add_num_and_double_raise(self):
+        with pytest.raises(ValueError):
+            #cal = calculation.Cal()  setup_methodを宣言したので不要
+            self.cal.add_num_and_double('1','1')
+
+# pytestは関数形でテストができる
+def test_add_num_and_double():
+    cal= calculation.Cal()
+    assert cal.add_num_and_double(1,1) == 4
