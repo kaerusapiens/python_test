@@ -1,7 +1,7 @@
 import unittest
 import calculation
 import pytest
-
+import os 
 release_name = 'dev'
 
 # unnittestの場合のクラス。
@@ -53,7 +53,68 @@ class TestCal(object):
             #cal = calculation.Cal()  setup_methodを宣言したので不要
             self.cal.add_num_and_double('1','1')
 
+class TestCalculation(object):
+    @classmethod
+    def setup_class(cls):
+        cls.cal = calculation.Cal()
+        cls.test_file_name = "test.txt"
+
+    def test_add_num_and_double(self):
+        #cal= calculation.Cal() setup_classを宣言したので不要
+        assert self.cal.add_num_and_double(1,1) == 4
+    
+    def test_save(self):
+        """실제 디렉토리에 파일을 저장하는 테스트"""
+        self.cal.save(".", self.test_file_name)
+        test_file_path = os.path.join(".",self.test_file_name)
+        assert os.path.exists(test_file_path) is True
+
+    #test_save메서드 작성후, teardonw을 아래에 실시하여 테스트파일을 직접 삭제해주었으나, 
+    # tmp_path 내장 fixture를 사용했다면 코드는 더욱더 간단해짐짐( pytest에서 기본 제공하는 fixture)
+    # def test_save(self, tmp_path):
+    #     test_file_path = tmp_path / self.test_file_name  # tmp_path 내부에 저장
+    #     self.cal.save(tmp_path, self.test_file_name)
+    #     assert test_file_path.exists()
+
+
+
+    @classmethod
+    def teardown_class(cls):
+        """테스트가 끝난 후 실제 파일 삭제"""
+        test_file_path = os.path.join(".", cls.test_file_name)
+        if os.path.exists(test_file_path):
+            os.remove(test_file_path)
+
+
 # pytestは関数形でテストができる
+# conftest.pyで指定したpytest_addoptionのデータを取得
 def test_add_num_and_double():
     cal= calculation.Cal()
     assert cal.add_num_and_double(1,1) == 4
+
+
+##########################
+######conftest study######
+##########################
+
+#------- reqeust.config.getiptionでfixture を定義しメソッド作成
+@pytest.fixture
+def os_name(request):  # request を引数に取る
+    return request.config.getoption("--os-name")  # コマンドラインオプションを取得
+
+# test_os で fixture `os_name` を使用
+def test_os_use_fixture(os_name):  
+    assert os_name in ["linux", "windows", "mac"]  # 取得した値がリストに含まれるかチェック
+
+#------- pytestconfig.getiptionでfixture を定義
+def test_os(pytestconfig):
+    os_name = pytestconfig.getoption("--os-name")
+    assert os_name in ["linux", "windows", "mac"]
+
+#-----------------------------conftestのfixture利用
+def test_csv_file(csv_file):
+    csv_file.write("id,name,age\n1,Alice,30\n2,Bob,25\n")
+    csv_file.seek(0)
+    content = csv_file.read()
+    assert "Alice" in content
+
