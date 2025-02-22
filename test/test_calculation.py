@@ -58,6 +58,20 @@ class TestCalculation(object):
     def setup_class(cls):
         cls.cal = calculation.Cal()
         cls.test_file_name = "test.txt"
+        cls.test_dir = "/./tmp/test_dir"
+
+    @classmethod
+    def teardown_class(cls):
+        """test_save 테스트가 끝난 후 실제 파일 삭제"""
+        test_file_path = os.path.join(".", cls.test_file_name)
+        if os.path.exists(test_file_path):
+            os.remove(test_file_path)
+
+        """test_save_no_dir 테스트가 끝난 후 실제 파일 삭제"""
+        import shutil
+        if os.path.exists(cls.test_dir):
+            shutil.rmtree(cls.test_dir) #shutil.rmtree()는 디렉터리와 그 안의 모든 파일을 재귀적으로 삭제하는 함수입니다. 
+
 
     def test_add_num_and_double(self):
         #cal= calculation.Cal() setup_classを宣言したので不要
@@ -76,14 +90,13 @@ class TestCalculation(object):
     #     self.cal.save(tmp_path, self.test_file_name)
     #     assert test_file_path.exists()
 
+    def test_save_no_dir(self):
+        self.cal.save(self.test_dir,self.test_file_name)
+        test_file_path = os.path.join(self.test_dir,self.test_file_name)
+        assert os.path.exists(test_file_path) is True
 
 
-    @classmethod
-    def teardown_class(cls):
-        """테스트가 끝난 후 실제 파일 삭제"""
-        test_file_path = os.path.join(".", cls.test_file_name)
-        if os.path.exists(test_file_path):
-            os.remove(test_file_path)
+
 
 
 # pytestは関数形でテストができる
