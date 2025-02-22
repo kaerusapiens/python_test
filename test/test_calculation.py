@@ -117,4 +117,4 @@ def test_csv_file(csv_file):
     csv_file.seek(0)
     content = csv_file.read()
     assert "Alice" in content
-
+    assert os.path.exists(csv_file.name)

@@ -18,17 +18,16 @@ def pytest_addoption(parser):
 # 테스트 함수에서 고정된 설정값(예: DB 연결, 파일 생성 등)을 공유할 때 유용함.
 # yield를 사용하면 테스트가 끝난 후 자동으로 정리(cleanup) 됨.
 @pytest.fixture
-def csv_file():
-    with open(os.path.join("test.csv"),"w+") as c:
-        """       
-        これでcsv fileを閉じる必要はなくなる。
-        """
+def csv_file(tmp_path):
+    name = 'test.csv'
+    file_path = tmp_path / name
+    with open(file_path,"w+") as c:
         print("before test")
-        # yield c
+        yield c #이 시점에서 함수가 멈추고 테스트 함수에 전달.test_xxx.py에서, yield로 넘겨 받은 csv_file을 테스트 함수로 실행시킴킴.
         print("after test")
 
 
-# tmpdir은 어떻게 동작할까?
-# tmpdir은 pytest가 자동으로 생성하는 임시 디렉토리임.
+# tmp_path은 어떻게 동작할까?
+#  pytest가 자동으로 생성하는 임시 디렉토리임.
 # 각 테스트 실행마다 새로운 임시 폴더를 만들어 사용함.
 # 테스트가 끝나면 pytest가 임시 디렉토리를 삭제함.
