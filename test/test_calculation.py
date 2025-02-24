@@ -6,8 +6,6 @@ release_name = 'dev'
 
 # unnittestの場合のクラス。
 class CalTest(unittest.TestCase):
-    """
-    """
     def setUp(self):
         """各テスト実行前に呼び出されるメソッドで、テスト環境を設定する役割"""
         print('setup')
@@ -110,7 +108,7 @@ def test_add_num_and_double():
 ######conftest study######
 ##########################
 
-#------- reqeust.config.getiptionでfixture を定義しメソッド作成
+#------- reqeust.config.getoptionでfixture を定義しメソッド作成
 @pytest.fixture
 def os_name(request):  # request を引数に取る
     return request.config.getoption("--os-name")  # コマンドラインオプションを取得
@@ -119,7 +117,7 @@ def os_name(request):  # request を引数に取る
 def test_os_use_fixture(os_name):  
     assert os_name in ["linux", "windows", "mac"]  # 取得した値がリストに含まれるかチェック
 
-#------- pytestconfig.getiptionでfixture を定義
+#------- pytestconfig.getoptionでfixture を定義
 def test_os(pytestconfig):
     os_name = pytestconfig.getoption("--os-name")
     assert os_name in ["linux", "windows", "mac"]
